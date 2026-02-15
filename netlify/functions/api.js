@@ -23,6 +23,7 @@ router.post('/submit', (req, res) => {
             <h2 style="color:#2563eb;">Submission Successful!</h2>
             <p>Your application has been received.</p>
             <a href="/" style="color:#2563eb; font-weight:bold; text-decoration:none;">Back to Form</a>
+            <br>
             <a href="/admin" style="color:#2563eb; font-weight:bold; text-decoration:none;">Sign-in as Admin</a>
         </div>
     `);
