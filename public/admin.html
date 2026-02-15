@@ -4,13 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GPC Student Leave Management System - HOD Dashboard</title>
+    <title>HOD Dashboard</title>
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
     <div class="admin-container">
-        <h2>GPC Student Leave Application - HOD Management Panel</h2>
+        <h2>GPC Leave - HOD Management Panel</h2>
         <div style="margin-bottom:20px;">
             <label>Filter Department:</label>
             <select id="branchFilter" onchange="loadRequests()">
@@ -36,7 +36,8 @@
     </div>
     <script>
         async function loadRequests() {
-            const response = await fetch('/get-requests');
+            // Correct API path for Netlify
+            const response = await fetch('/.netlify/functions/api/get-requests');
             const data = await response.json();
             const filter = document.getElementById('branchFilter').value;
             const tableBody = document.getElementById('requestTableBody');
@@ -49,7 +50,7 @@
                         <td>${req.name}</td>
                         <td><span class="status-${req.status}">${req.status}</span></td>
                         <td>
-                            <form action="/update" method="POST">
+                            <form action="/.netlify/functions/api/update" method="POST">
                                 <input type="hidden" name="id" value="${req.id}">
                                 <button name="status" value="Approved" class="action-btn btn-approve">Approve</button>
                                 <button name="status" value="Rejected" class="action-btn btn-reject">Reject</button>

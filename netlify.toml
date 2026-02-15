@@ -11,8 +11,21 @@
   from = "/submit"
   to = "/.netlify/functions/api/submit"
   status = 200
+  force = true
 
 [[redirects]]
   from = "/update"
   to = "/.netlify/functions/api/update"
+  status = 200
+  force = true
+
+# This ensures that /admin-panel loads admin.html even on refreshes
+[[redirects]]
+  from = "/admin-panel"
+  to = "/admin.html"
+  status = 200
+
+[[redirects]]
+  from = "/about"
+  to = "/about.html"
   status = 200
