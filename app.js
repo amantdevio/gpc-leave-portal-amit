@@ -3,18 +3,18 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const app = express();
 
-app.use(express.static('public'));
+const publicPath = path.join(process.cwd(), 'public');
+
+app.use(express.static(publicPath));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 let leaveRequests = [];
 
-// Navigation Routes
-app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'public', 'index.html')));
-app.get('/admin-panel', (req, res) => res.sendFile(path.join(__dirname, 'public', 'admin.html')));
-app.get('/about', (req, res) => res.sendFile(path.join(__dirname, 'public', 'about.html')));
+app.get('/', (req, res) => res.sendFile(path.join(publicPath, 'index.html')));
+app.get('/admin-panel', (req, res) => res.sendFile(path.join(publicPath, 'admin.html')));
+app.get('/about', (req, res) => res.sendFile(path.join(publicPath, 'about.html')));
 
-// API Routes
 app.get('/get-requests', (req, res) => res.json(leaveRequests));
 
 app.post('/submit', (req, res) => {
@@ -36,5 +36,9 @@ app.post('/update', (req, res) => {
     res.redirect('/admin-panel');
 });
 
-const PORT = process.env.PORT||3000;
-app.listen(PORT, () => console.log(`Server: http://localhost:${PORT}`));
+const PORT = process.env.PORT || 3000;
+if (process.env.NODE_ENV !== 'production') {
+    app.listen(PORT, () => console.log(`Server: http://localhost:${PORT}`));
+}
+
+module.exports = app;
