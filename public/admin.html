@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GPC Student Leave Management System - HOD Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="admin-container">
+        <h2>GPC Student Leave Application - HOD Management Panel</h2>
+        <div style="margin-bottom:20px;">
+            <label>Filter Department:</label>
+            <select id="branchFilter" onchange="loadRequests()">
+                <option value="ALL">All Departments</option>
+                <option value="Computer Science">Computer Science</option>
+                <option value="Mechanical">Mechanical</option>
+            </select>
+        </div>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Enrollment</th>
+                        <th>Name</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="requestTableBody"></tbody>
+            </table>
+        </div>
+        <a href="/" class="footer-link">Use as Student</a>
+    </div>
+    <script>
+        async function loadRequests() {
+            const response = await fetch('/get-requests');
+            const data = await response.json();
+            const filter = document.getElementById('branchFilter').value;
+            const tableBody = document.getElementById('requestTableBody');
+            tableBody.innerHTML = '';
+            data.forEach(req => {
+                if (filter !== "ALL" && req.branch !== filter) return;
+                tableBody.innerHTML += `
+                    <tr>
+                        <td>${req.enrollment}</td>
+                        <td>${req.name}</td>
+                        <td><span class="status-${req.status}">${req.status}</span></td>
+                        <td>
+                            <form action="/update" method="POST">
+                                <input type="hidden" name="id" value="${req.id}">
+                                <button name="status" value="Approved" class="action-btn btn-approve">Approve</button>
+                                <button name="status" value="Rejected" class="action-btn btn-reject">Reject</button>
+                            </form>
+                        </td>
+                    </tr>`;
+            });
+        }
+        loadRequests();
+    </script>
+</body>
+
+</html>
